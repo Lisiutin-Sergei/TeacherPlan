@@ -40,6 +40,8 @@ namespace TeacherPlan.Interface
         private readonly IScienceGroupService _scienceGroupService;
         private readonly IStudentResearchService _studentResearchService;
         private readonly IPublicationService _publicationService;
+        private readonly ITrainingWorkService _trainingWorkService;
+        private readonly IProfessionalWorkService _professionalWorkService;
 
         #endregion
 
@@ -55,7 +57,9 @@ namespace TeacherPlan.Interface
             IStateBudgetWorkService stateBudgetWorkService,
             IScienceGroupService scienceGroupService,
             IStudentResearchService studentResearchService,
-            IPublicationService publicationService)
+            IPublicationService publicationService,
+            ITrainingWorkService trainingWorkService,
+            IProfessionalWorkService professionalWorkService)
         {
             InitializeComponent();
 
@@ -72,6 +76,8 @@ namespace TeacherPlan.Interface
             _scienceGroupService = scienceGroupService;
             _studentResearchService = studentResearchService;
             _publicationService = publicationService;
+            _trainingWorkService = trainingWorkService;
+            _professionalWorkService = professionalWorkService;
         }
 
         #region Обработчики событий
@@ -105,6 +111,8 @@ namespace TeacherPlan.Interface
                     RefreshScienceGroups();
                     RefreshStudentsResearches();
                     RefreshPublications();
+                    RefreshTrainingWorks();
+                    RefreshProfessionalWorks();
                 }
                 else
                 {
@@ -1105,6 +1113,220 @@ namespace TeacherPlan.Interface
         }
 
         #endregion Госбюджетная работа
+
+        #endregion
+
+        #region ВОСПИТАТЕЛЬНАЯ и ВНЕАУДИТОРНАЯ И РАБОТА СО СТУДЕНТАМИ
+
+        /// <summary>
+        /// Добавить воспитательную работу.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_AddTrainingWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var form = IoC.Instance.Resolve<EditTrainingWorkForm>(
+                   new IoC.NinjectArgument("trainingWorkId", 0),
+                   new IoC.NinjectArgument("planId", _planId));
+                form.FormClosed += RefreshTrainingWorks;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Изменить воспитательную работу.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_EditTrainingWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowsCount = dgvTrainingWorks.SelectedRows.Count;
+                if (selectedRowsCount != 1)
+                {
+                    throw new Exception("Выберите воспитательную работу.");
+                }
+                
+               var trainingWorkId = (int)dgvTrainingWorks.SelectedRows[0].Cells[0].Value;
+
+                var form = IoC.Instance.Resolve<EditTrainingWorkForm>(
+                   new IoC.NinjectArgument("trainingWorkId", trainingWorkId),
+                   new IoC.NinjectArgument("planId", _planId));
+                form.FormClosed += RefreshTrainingWorks;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Удалить воспитательную работу.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_DeleteTrainingWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowsCount = dgvTrainingWorks.SelectedRows.Count;
+                if (selectedRowsCount != 1)
+                {
+                    throw new Exception("Выберите воспитательную работу.");
+                }
+
+                var trainingWorkId = (int)dgvTrainingWorks.SelectedRows[0].Cells[0].Value;
+
+                var confirmation = MessageBox.Show("Удалить воспитательную работу?", "Подтверждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (confirmation == DialogResult.OK)
+                {
+                    _trainingWorkService.DeleteTrainingWork(trainingWorkId);
+                    RefreshTrainingWorks();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Обновить список воспитательных работ.
+        /// </summary>
+        private void RefreshTrainingWorks(object sender = null, EventArgs e = null)
+        {
+            dgvTrainingWorks.Rows.Clear();
+
+            var works = _trainingWorkService.LoadTrainingWorksByPlan(_planId);
+            if (!(works?.Any() ?? false))
+            {
+                return;
+            }
+
+            foreach (var work in works)
+            {
+                dgvTrainingWorks.Rows.Add(
+                    work.TrainingWorkId,
+                    work.Name,
+                    work.Date,
+                    work.Execution);
+            }
+        }
+
+        #endregion
+
+        #region ПРОФОРИЕНТАЦИОННАЯ РАБОТА
+
+        /// <summary>
+        /// Добавить профориентационную работу.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_AddProfessionalWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var form = IoC.Instance.Resolve<EditProfessionalWorkForm>(
+                   new IoC.NinjectArgument("professionalWorkId", 0),
+                   new IoC.NinjectArgument("planId", _planId));
+                form.FormClosed += RefreshProfessionalWorks;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Изменить профориентационную работу.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_EditProfessionalWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowsCount = dgvProfessionalWork.SelectedRows.Count;
+                if (selectedRowsCount != 1)
+                {
+                    throw new Exception("Выберите профориентационную работу.");
+                }
+
+                var professionalWorkId = (int)dgvProfessionalWork.SelectedRows[0].Cells[0].Value;
+
+                var form = IoC.Instance.Resolve<EditProfessionalWorkForm>(
+                   new IoC.NinjectArgument("professionalWorkId", professionalWorkId),
+                   new IoC.NinjectArgument("planId", _planId));
+                form.FormClosed += RefreshProfessionalWorks;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Удалить профориентационную работу.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_DeleteProfessionalWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowsCount = dgvProfessionalWork.SelectedRows.Count;
+                if (selectedRowsCount != 1)
+                {
+                    throw new Exception("Выберите профориентационную работу.");
+                }
+
+                var professionalWorkId = (int)dgvProfessionalWork.SelectedRows[0].Cells[0].Value;
+
+                var confirmation = MessageBox.Show("Удалить профориентационную работу?", "Подтверждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (confirmation == DialogResult.OK)
+                {
+                    _professionalWorkService.DeleteProfessionalWork(professionalWorkId);
+                    RefreshProfessionalWorks();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Обновить список профориентационных работ.
+        /// </summary>
+        private void RefreshProfessionalWorks(object sender = null, EventArgs e = null)
+        {
+            dgvProfessionalWork.Rows.Clear();
+
+            var works = _professionalWorkService.LoadProfessionalWorksByPlan(_planId);
+            if (!(works?.Any() ?? false))
+            {
+                return;
+            }
+
+            foreach (var work in works)
+            {
+                dgvProfessionalWork.Rows.Add(
+                    work.ProfessionalWorkId,
+                    work.Name,
+                    work.Date,
+                    work.Execution);
+            }
+        }
 
         #endregion
 

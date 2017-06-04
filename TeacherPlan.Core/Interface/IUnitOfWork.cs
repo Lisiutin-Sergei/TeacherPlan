@@ -65,6 +65,16 @@ namespace TeacherPlan.Core.Interface
         /// </summary>
         IPublicationRepository PublicationRepository { get; }
 
+        /// <summary>
+        /// Репозиторий сущности "Воспитательная и внеаудиторная и работа со студентами".
+        /// </summary>
+        ITrainingWorkRepository TrainingWorkRepository { get; }
+
+        /// <summary>
+        /// Репозиторий сущности "Профориентационная работа".
+        /// </summary>
+        IProfessionalWorkRepository ProfessionalWorkRepository { get; }
+
         #endregion
 
         /// <summary>

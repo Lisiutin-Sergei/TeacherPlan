@@ -139,6 +139,24 @@
             this.button10 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.button13 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
+            this.button15 = new System.Windows.Forms.Button();
+            this.dgvTrainingWorks = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn34 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.button16 = new System.Windows.Forms.Button();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
+            this.dgvProfessionalWork = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn35 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn36 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn37 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn38 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControlMain.SuspendLayout();
             this.tabEducationalWork.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEducationalWorks)).BeginInit();
@@ -161,6 +179,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvStudentResearch)).BeginInit();
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPublications)).BeginInit();
+            this.tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTrainingWorks)).BeginInit();
+            this.tabPage9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProfessionalWork)).BeginInit();
             this.SuspendLayout();
             // 
             // tbPlanName
@@ -270,6 +292,8 @@
             this.tabControlMain.Controls.Add(this.tabEduMethodWork);
             this.tabControlMain.Controls.Add(this.tabBooks);
             this.tabControlMain.Controls.Add(this.tabPage3);
+            this.tabControlMain.Controls.Add(this.tabPage8);
+            this.tabControlMain.Controls.Add(this.tabPage9);
             this.tabControlMain.Location = new System.Drawing.Point(15, 116);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
@@ -1214,6 +1238,186 @@
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.Btn_AddPublication_Click);
             // 
+            // tabPage8
+            // 
+            this.tabPage8.Controls.Add(this.button13);
+            this.tabPage8.Controls.Add(this.button14);
+            this.tabPage8.Controls.Add(this.button15);
+            this.tabPage8.Controls.Add(this.dgvTrainingWorks);
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage8.Size = new System.Drawing.Size(798, 311);
+            this.tabPage8.TabIndex = 4;
+            this.tabPage8.Text = "ВОСПИТАТЕЛЬНАЯ и ВНЕАУДИТОРНАЯ И РАБОТА СО СТУДЕНТАМИ";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // button13
+            // 
+            this.button13.Image = ((System.Drawing.Image)(resources.GetObject("button13.Image")));
+            this.button13.Location = new System.Drawing.Point(752, 98);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(40, 40);
+            this.button13.TabIndex = 16;
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.Btn_DeleteTrainingWork_Click);
+            // 
+            // button14
+            // 
+            this.button14.Image = ((System.Drawing.Image)(resources.GetObject("button14.Image")));
+            this.button14.Location = new System.Drawing.Point(752, 52);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(40, 40);
+            this.button14.TabIndex = 17;
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.Btn_EditTrainingWork_Click);
+            // 
+            // button15
+            // 
+            this.button15.Image = ((System.Drawing.Image)(resources.GetObject("button15.Image")));
+            this.button15.Location = new System.Drawing.Point(752, 6);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(40, 40);
+            this.button15.TabIndex = 18;
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.Btn_AddTrainingWork_Click);
+            // 
+            // dgvTrainingWorks
+            // 
+            this.dgvTrainingWorks.AllowUserToAddRows = false;
+            this.dgvTrainingWorks.AllowUserToDeleteRows = false;
+            this.dgvTrainingWorks.AllowUserToResizeColumns = false;
+            this.dgvTrainingWorks.AllowUserToResizeRows = false;
+            this.dgvTrainingWorks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTrainingWorks.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn31,
+            this.dataGridViewTextBoxColumn32,
+            this.dataGridViewTextBoxColumn33,
+            this.dataGridViewTextBoxColumn34});
+            this.dgvTrainingWorks.Location = new System.Drawing.Point(7, 6);
+            this.dgvTrainingWorks.Name = "dgvTrainingWorks";
+            this.dgvTrainingWorks.ReadOnly = true;
+            this.dgvTrainingWorks.RowHeadersVisible = false;
+            this.dgvTrainingWorks.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvTrainingWorks.Size = new System.Drawing.Size(739, 299);
+            this.dgvTrainingWorks.TabIndex = 15;
+            // 
+            // dataGridViewTextBoxColumn31
+            // 
+            this.dataGridViewTextBoxColumn31.HeaderText = "EduMethodWorkId";
+            this.dataGridViewTextBoxColumn31.Name = "dataGridViewTextBoxColumn31";
+            this.dataGridViewTextBoxColumn31.ReadOnly = true;
+            this.dataGridViewTextBoxColumn31.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn32
+            // 
+            this.dataGridViewTextBoxColumn32.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn32.HeaderText = "Вид работ";
+            this.dataGridViewTextBoxColumn32.Name = "dataGridViewTextBoxColumn32";
+            this.dataGridViewTextBoxColumn32.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn33
+            // 
+            this.dataGridViewTextBoxColumn33.HeaderText = "Сроки";
+            this.dataGridViewTextBoxColumn33.Name = "dataGridViewTextBoxColumn33";
+            this.dataGridViewTextBoxColumn33.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn34
+            // 
+            this.dataGridViewTextBoxColumn34.HeaderText = "Отметки о выполнении";
+            this.dataGridViewTextBoxColumn34.Name = "dataGridViewTextBoxColumn34";
+            this.dataGridViewTextBoxColumn34.ReadOnly = true;
+            // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.button16);
+            this.tabPage9.Controls.Add(this.button17);
+            this.tabPage9.Controls.Add(this.button18);
+            this.tabPage9.Controls.Add(this.dgvProfessionalWork);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage9.Size = new System.Drawing.Size(798, 311);
+            this.tabPage9.TabIndex = 5;
+            this.tabPage9.Text = "ПРОФОРИЕНТАЦИОННАЯ РАБОТА";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // button16
+            // 
+            this.button16.Image = ((System.Drawing.Image)(resources.GetObject("button16.Image")));
+            this.button16.Location = new System.Drawing.Point(752, 98);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(40, 40);
+            this.button16.TabIndex = 20;
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.Btn_DeleteProfessionalWork_Click);
+            // 
+            // button17
+            // 
+            this.button17.Image = ((System.Drawing.Image)(resources.GetObject("button17.Image")));
+            this.button17.Location = new System.Drawing.Point(752, 52);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(40, 40);
+            this.button17.TabIndex = 21;
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.Btn_EditProfessionalWork_Click);
+            // 
+            // button18
+            // 
+            this.button18.Image = ((System.Drawing.Image)(resources.GetObject("button18.Image")));
+            this.button18.Location = new System.Drawing.Point(752, 6);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(40, 40);
+            this.button18.TabIndex = 22;
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.Btn_AddProfessionalWork_Click);
+            // 
+            // dgvProfessionalWork
+            // 
+            this.dgvProfessionalWork.AllowUserToAddRows = false;
+            this.dgvProfessionalWork.AllowUserToDeleteRows = false;
+            this.dgvProfessionalWork.AllowUserToResizeColumns = false;
+            this.dgvProfessionalWork.AllowUserToResizeRows = false;
+            this.dgvProfessionalWork.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvProfessionalWork.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn35,
+            this.dataGridViewTextBoxColumn36,
+            this.dataGridViewTextBoxColumn37,
+            this.dataGridViewTextBoxColumn38});
+            this.dgvProfessionalWork.Location = new System.Drawing.Point(7, 6);
+            this.dgvProfessionalWork.Name = "dgvProfessionalWork";
+            this.dgvProfessionalWork.ReadOnly = true;
+            this.dgvProfessionalWork.RowHeadersVisible = false;
+            this.dgvProfessionalWork.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvProfessionalWork.Size = new System.Drawing.Size(739, 299);
+            this.dgvProfessionalWork.TabIndex = 19;
+            // 
+            // dataGridViewTextBoxColumn35
+            // 
+            this.dataGridViewTextBoxColumn35.HeaderText = "EduMethodWorkId";
+            this.dataGridViewTextBoxColumn35.Name = "dataGridViewTextBoxColumn35";
+            this.dataGridViewTextBoxColumn35.ReadOnly = true;
+            this.dataGridViewTextBoxColumn35.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn36
+            // 
+            this.dataGridViewTextBoxColumn36.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn36.HeaderText = "Вид работ";
+            this.dataGridViewTextBoxColumn36.Name = "dataGridViewTextBoxColumn36";
+            this.dataGridViewTextBoxColumn36.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn37
+            // 
+            this.dataGridViewTextBoxColumn37.HeaderText = "Сроки";
+            this.dataGridViewTextBoxColumn37.Name = "dataGridViewTextBoxColumn37";
+            this.dataGridViewTextBoxColumn37.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn38
+            // 
+            this.dataGridViewTextBoxColumn38.HeaderText = "Отметки о выполнении";
+            this.dataGridViewTextBoxColumn38.Name = "dataGridViewTextBoxColumn38";
+            this.dataGridViewTextBoxColumn38.ReadOnly = true;
+            // 
             // EditPlanForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1257,6 +1461,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvStudentResearch)).EndInit();
             this.tabPage7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPublications)).EndInit();
+            this.tabPage8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTrainingWorks)).EndInit();
+            this.tabPage9.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProfessionalWork)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1374,5 +1582,23 @@
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.DataGridView dgvTrainingWorks;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn31;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn32;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn33;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn34;
+        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.DataGridView dgvProfessionalWork;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn35;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn36;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn37;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn38;
     }
 }

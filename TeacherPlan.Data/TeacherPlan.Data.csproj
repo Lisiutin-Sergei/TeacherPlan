@@ -126,6 +126,8 @@
     <Compile Include="Mapping\BooksWritingMap.cs" />
     <Compile Include="Mapping\EducationalWorkTypeMap.cs" />
     <Compile Include="Mapping\PublicationMap.cs" />
+    <Compile Include="Mapping\ProfessionalWorkMap.cs" />
+    <Compile Include="Mapping\TrainingWorkMap.cs" />
     <Compile Include="Mapping\StudentResearchMap.cs" />
     <Compile Include="Mapping\ScienceGroupMap.cs" />
     <Compile Include="Mapping\StateBudgetWorkMap.cs" />
@@ -136,6 +138,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BooksPublishingRepository.cs" />
     <Compile Include="Repositories\PublicationRepository.cs" />
+    <Compile Include="Repositories\ProfessionalWorkRepository.cs" />
+    <Compile Include="Repositories\TrainingWorkRepository.cs" />
     <Compile Include="Repositories\StudentResearchRepository.cs" />
     <Compile Include="Repositories\ScienceGroupRepository.cs" />
     <Compile Include="Repositories\StateBudgetWorkRepository.cs" />

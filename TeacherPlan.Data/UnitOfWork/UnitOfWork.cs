@@ -76,6 +76,16 @@ namespace TeacherPlan.Data.UnitOfWork
         /// </summary>
         public IPublicationRepository PublicationRepository => new PublicationRepository(_dataContext.Value);
 
+        /// <summary>
+        /// Репозиторий сущности "Профориентационная работа".
+        /// </summary>
+        public IProfessionalWorkRepository ProfessionalWorkRepository => new ProfessionalWorkRepository(_dataContext.Value);
+
+        /// <summary>
+        /// Репозиторий сущности "Воспитательная и внеаудиторная и работа со студентами".
+        /// </summary>
+        public ITrainingWorkRepository TrainingWorkRepository => new TrainingWorkRepository(_dataContext.Value);
+
         #endregion
 
         /// <summary>

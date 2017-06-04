@@ -9,17 +9,17 @@ using TeacherPlan.Data.UnitOfWork;
 namespace TeacherPlan.Data.Repositories
 {
     /// <summary>
-    /// Репозиторий Госбюджетных работ.
+    /// Репозиторий сущности "Профориентационная работа".
     /// </summary>
-    public class StateBudgetWorkRepository : IStateBudgetWorkRepository
+    public class ProfessionalWorkRepository : IProfessionalWorkRepository
     {
         private DataContext _dataContext;
 
         /// <summary>
-        /// Конструктор репозитория Госбюджетных работ.
+        /// Конструктор репозитория сущности "Профориентационная работа".
         /// </summary>
         /// <param name="dataContext">Контекст данных (подключение к базе и транзакция).</param>
-        public StateBudgetWorkRepository(DataContext dataContext)
+        public ProfessionalWorkRepository(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
@@ -29,7 +29,7 @@ namespace TeacherPlan.Data.Repositories
         /// </summary>
         /// <param name="item">Модель нового экземпляра сущности.</param>
         /// <returns>Идентификатор нового экземпляра сущности.</returns>
-        public int Insert(StateBudgetWork item)
+        public int Insert(ProfessionalWork item)
         {
             return (int)_dataContext.Connection.Insert(item, _dataContext.Transaction);
         }
@@ -38,7 +38,7 @@ namespace TeacherPlan.Data.Repositories
         /// Обновить существующий экземпляр сущности.
         /// </summary>
         /// <param name="item">Модель экземпляра сущности.</param>
-        public void Update(StateBudgetWork item)
+        public void Update(ProfessionalWork item)
         {
             _dataContext.Connection.Update(item, _dataContext.Transaction);
         }
@@ -47,7 +47,7 @@ namespace TeacherPlan.Data.Repositories
         /// Удалить существующий экземпляр сущности.
         /// </summary>
         /// <param name="item">Модель экземпляра сущности.</param>
-        public void Delete(StateBudgetWork item)
+        public void Delete(ProfessionalWork item)
         {
             _dataContext.Connection.Delete(item, _dataContext.Transaction);
         }
@@ -56,9 +56,9 @@ namespace TeacherPlan.Data.Repositories
         /// Получить список всех экземпляров сущности.
         /// </summary>
         /// <returns>Список всех экземпляров сущности.</returns>
-        public IEnumerable<StateBudgetWork> GetAll()
+        public IEnumerable<ProfessionalWork> GetAll()
         {
-            return _dataContext.Connection.GetAll<StateBudgetWork>().ToList();
+            return _dataContext.Connection.GetAll<ProfessionalWork>().ToList();
         }
 
         /// <summary>
@@ -66,9 +66,9 @@ namespace TeacherPlan.Data.Repositories
         /// </summary>
         /// <param name="filter">Фильтр.</param>
         /// <returns>Список экземпляров сущности.</returns>
-        public IEnumerable<StateBudgetWork> GetByFilter(Func<StateBudgetWork, bool> filter)
+        public IEnumerable<ProfessionalWork> GetByFilter(Func<ProfessionalWork, bool> filter)
         {
-            var data = _dataContext.Connection.GetAll<StateBudgetWork>();
+            var data = _dataContext.Connection.GetAll<ProfessionalWork>();
             if (filter != null)
             {
                 data = data.Where(filter);
@@ -81,9 +81,9 @@ namespace TeacherPlan.Data.Repositories
         /// </summary>
         /// <param name="id">Идентификатор экземпляра сущности.</param>
         /// <returns>Найденный экземпляр сущности.</returns>
-        public StateBudgetWork GetByID(int id)
+        public ProfessionalWork GetByID(int id)
         {
-            return _dataContext.Connection.Get<StateBudgetWork>(id);
+            return _dataContext.Connection.Get<ProfessionalWork>(id);
         }
     }
 }

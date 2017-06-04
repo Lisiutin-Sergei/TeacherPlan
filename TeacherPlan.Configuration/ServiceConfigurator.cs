@@ -40,6 +40,8 @@ namespace TeacherPlan.Configuration
             kernel.Bind<IScienceGroupService>().To<ScienceGroupService>().InTransientScope();
             kernel.Bind<IStudentResearchService>().To<StudentResearchService>().InTransientScope();
             kernel.Bind<IPublicationService>().To<PublicationService>().InTransientScope();
+            kernel.Bind<ITrainingWorkService>().To<TrainingWorkService>().InTransientScope();
+            kernel.Bind<IProfessionalWorkService>().To<ProfessionalWorkService>().InTransientScope();
         }
 
         /// <summary>
