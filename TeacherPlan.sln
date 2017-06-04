@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeacherPlan.Interface", "TeacherPlan.Interface\TeacherPlan.Interface.csproj", "{00A81957-2CB3-4CB7-93C9-0311CDBACCA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeacherPlan.Utilities", "TeacherPlan.Utilities\TeacherPlan.Utilities.csproj", "{B9D79657-CA73-49EB-8878-C362E6FD38F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeacherPlan.Core", "TeacherPlan.Core\TeacherPlan.Core.csproj", "{2552BAA3-6060-4ECF-BFB3-F0E86B85DAB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeacherPlan.Data", "TeacherPlan.Data\TeacherPlan.Data.csproj", "{8DF3ED6D-3B64-474B-BE60-15264A0F32AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeacherPlan.Configuration", "TeacherPlan.Configuration\TeacherPlan.Configuration.csproj", "{32CFF695-C2DD-434B-9788-5F3E8DB97CA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeacherPlan.Test", "TeacherPlan.Test\TeacherPlan.Test.csproj", "{A6C64E61-FDE6-4F8F-8670-02FF558357F4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00A81957-2CB3-4CB7-93C9-0311CDBACCA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00A81957-2CB3-4CB7-93C9-0311CDBACCA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00A81957-2CB3-4CB7-93C9-0311CDBACCA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00A81957-2CB3-4CB7-93C9-0311CDBACCA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9D79657-CA73-49EB-8878-C362E6FD38F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9D79657-CA73-49EB-8878-C362E6FD38F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9D79657-CA73-49EB-8878-C362E6FD38F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9D79657-CA73-49EB-8878-C362E6FD38F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2552BAA3-6060-4ECF-BFB3-F0E86B85DAB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2552BAA3-6060-4ECF-BFB3-F0E86B85DAB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2552BAA3-6060-4ECF-BFB3-F0E86B85DAB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2552BAA3-6060-4ECF-BFB3-F0E86B85DAB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DF3ED6D-3B64-474B-BE60-15264A0F32AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DF3ED6D-3B64-474B-BE60-15264A0F32AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DF3ED6D-3B64-474B-BE60-15264A0F32AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF3ED6D-3B64-474B-BE60-15264A0F32AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32CFF695-C2DD-434B-9788-5F3E8DB97CA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32CFF695-C2DD-434B-9788-5F3E8DB97CA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32CFF695-C2DD-434B-9788-5F3E8DB97CA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32CFF695-C2DD-434B-9788-5F3E8DB97CA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6C64E61-FDE6-4F8F-8670-02FF558357F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6C64E61-FDE6-4F8F-8670-02FF558357F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6C64E61-FDE6-4F8F-8670-02FF558357F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6C64E61-FDE6-4F8F-8670-02FF558357F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
