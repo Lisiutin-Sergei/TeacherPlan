@@ -67,6 +67,12 @@
     <Compile Include="AuthorizationForm.Designer.cs">
       <DependentUpon>AuthorizationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditAdditionalWorkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditAdditionalWorkForm.Designer.cs">
+      <DependentUpon>EditAdditionalWorkForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditBookPublishingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +84,12 @@
     </Compile>
     <Compile Include="EditBookWritingForm.Designer.cs">
       <DependentUpon>EditBookWritingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditContractWorkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditContractWorkForm.Designer.cs">
+      <DependentUpon>EditContractWorkForm.cs</DependentUpon>
     </Compile>
     <Compile Include="EditEducationalWorkForm.cs">
       <SubType>Form</SubType>
@@ -91,11 +103,23 @@
     <Compile Include="EditEduMethodWorkForm.Designer.cs">
       <DependentUpon>EditEduMethodWorkForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditOtherWorkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditOtherWorkForm.Designer.cs">
+      <DependentUpon>EditOtherWorkForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditPlanForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="EditPlanForm.Designer.cs">
       <DependentUpon>EditPlanForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditPlannedWorkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditPlannedWorkForm.Designer.cs">
+      <DependentUpon>EditPlannedWorkForm.cs</DependentUpon>
     </Compile>
     <Compile Include="EditProfessionalWorkForm.cs">
       <SubType>Form</SubType>
@@ -139,6 +163,8 @@
     <Compile Include="EditUserForm.Designer.cs">
       <DependentUpon>EditUserForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Import\DocxImportService.cs" />
+    <Compile Include="Import\IImportService.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -165,11 +191,17 @@
     <EmbeddedResource Include="AuthorizationForm.resx">
       <DependentUpon>AuthorizationForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EditAdditionalWorkForm.resx">
+      <DependentUpon>EditAdditionalWorkForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditBookPublishingForm.resx">
       <DependentUpon>EditBookPublishingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditBookWritingForm.resx">
       <DependentUpon>EditBookWritingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditContractWorkForm.resx">
+      <DependentUpon>EditContractWorkForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditEducationalWorkForm.resx">
       <DependentUpon>EditEducationalWorkForm.cs</DependentUpon>
@@ -177,8 +209,14 @@
     <EmbeddedResource Include="EditEduMethodWorkForm.resx">
       <DependentUpon>EditEduMethodWorkForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EditOtherWorkForm.resx">
+      <DependentUpon>EditOtherWorkForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditPlanForm.resx">
       <DependentUpon>EditPlanForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditPlannedWorkForm.resx">
+      <DependentUpon>EditPlannedWorkForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditProfessionalWorkForm.resx">
       <DependentUpon>EditProfessionalWorkForm.cs</DependentUpon>
@@ -247,9 +285,7 @@
       <Name>TeacherPlan.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Import\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Resources\add.png" />
     <Content Include="Resources\close.png" />

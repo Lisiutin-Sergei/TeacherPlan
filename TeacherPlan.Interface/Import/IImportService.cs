@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TeacherPlan.Interface.Import
+﻿namespace TeacherPlan.Interface.Import
 {
     /// <summary>
     /// Интерфейс для утилит импорта.
@@ -12,10 +6,10 @@ namespace TeacherPlan.Interface.Import
     public interface IImportService
     {
         /// <summary>
-        /// Импортировать реестр.
+        /// Импортировать план.
         /// </summary>
         /// <param name="userId">Идентификатор пользователя.</param>
-        /// <param name="planId">Идентификатор реестра.</param>
+        /// <param name="planId">Идентификатор плана.</param>
         /// <param name="openAfterSave">Открыть ли после сохранения.</param>
         void ImportPlan(int userId, int planId, bool openAfterSave = true);
     }

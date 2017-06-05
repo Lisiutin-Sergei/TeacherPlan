@@ -75,6 +75,11 @@ namespace TeacherPlan.Core.Interface
         /// </summary>
         IProfessionalWorkRepository ProfessionalWorkRepository { get; }
 
+        /// <summary>
+        /// Репозиторий сущности "Запланированные работы".
+        /// </summary>
+        IPlannedWorkRepository PlannedWorkRepository { get; }
+
         #endregion
 
         /// <summary>

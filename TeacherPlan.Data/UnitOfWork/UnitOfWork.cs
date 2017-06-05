@@ -86,6 +86,11 @@ namespace TeacherPlan.Data.UnitOfWork
         /// </summary>
         public ITrainingWorkRepository TrainingWorkRepository => new TrainingWorkRepository(_dataContext.Value);
 
+        /// <summary>
+        /// Репозиторий сущности "Запланированные работы".
+        /// </summary>
+        public IPlannedWorkRepository PlannedWorkRepository => new PlannedWorkRepository(_dataContext.Value);
+
         #endregion
 
         /// <summary>

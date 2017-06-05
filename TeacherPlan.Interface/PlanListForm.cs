@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using TeacherPlan.Configuration;
 using TeacherPlan.Core.Interface.Service;
+using TeacherPlan.Interface.Import;
 
 namespace TeacherPlan.Interface
 {
@@ -19,7 +20,7 @@ namespace TeacherPlan.Interface
         /// <summary>
         /// Сервис импорта данных.
         /// </summary>
-        //private readonly IImportService _importService;
+        private readonly IImportService _importService;
 
         #region Сервисы
 
@@ -31,9 +32,8 @@ namespace TeacherPlan.Interface
         public PlanListForm(
             int userId,
             IPlanService planService,
-            IUserService userService
-            //IImportService importService
-            )
+            IUserService userService,
+            IImportService importService)
         {
             InitializeComponent();
 
@@ -41,7 +41,7 @@ namespace TeacherPlan.Interface
 
             _planService = planService;
             _userService = userService;
-            //_importService = importService;
+            _importService = importService;
         }
 
         #region Обработка событий
@@ -164,7 +164,7 @@ namespace TeacherPlan.Interface
                 }
 
                 var planId = int.Parse(dgvPlans.SelectedRows[0].Cells["PlanId"]?.Value?.ToString());
-                //_importService.ImportPlan(_userId, planId);
+                _importService.ImportPlan(_userId, planId);
             }
             catch (Exception ex)
             {

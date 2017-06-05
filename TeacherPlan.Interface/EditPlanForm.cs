@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using TeacherPlan.Configuration;
 using TeacherPlan.Core.Interface.Service;
 using TeacherPlan.Core.Model.Domain;
+using TeacherPlan.Interface.Import;
 
 namespace TeacherPlan.Interface
 {
@@ -42,6 +43,8 @@ namespace TeacherPlan.Interface
         private readonly IPublicationService _publicationService;
         private readonly ITrainingWorkService _trainingWorkService;
         private readonly IProfessionalWorkService _professionalWorkService;
+        private readonly IPlannedWorkService _plannedWorkService;
+        private readonly IImportService _importService;
 
         #endregion
 
@@ -59,12 +62,15 @@ namespace TeacherPlan.Interface
             IStudentResearchService studentResearchService,
             IPublicationService publicationService,
             ITrainingWorkService trainingWorkService,
-            IProfessionalWorkService professionalWorkService)
+            IProfessionalWorkService professionalWorkService,
+            IPlannedWorkService plannedWorkService,
+            IImportService importService)
         {
             InitializeComponent();
 
             _userId = userId;
             _planId = planId;
+            _importService = importService;
 
             _userService = userService;
             _planService = planService;
@@ -78,6 +84,7 @@ namespace TeacherPlan.Interface
             _publicationService = publicationService;
             _trainingWorkService = trainingWorkService;
             _professionalWorkService = professionalWorkService;
+            _plannedWorkService = plannedWorkService;
         }
 
         #region Обработчики событий
@@ -113,6 +120,10 @@ namespace TeacherPlan.Interface
                     RefreshPublications();
                     RefreshTrainingWorks();
                     RefreshProfessionalWorks();
+                    RefreshContractWorks();
+                    RefreshAdditionalWorks();
+                    RefreshOtherWorks();
+                    RefreshPlannedWorks();
                 }
                 else
                 {
@@ -1325,6 +1336,446 @@ namespace TeacherPlan.Interface
                     work.Name,
                     work.Date,
                     work.Execution);
+            }
+        }
+
+        #endregion
+
+        #region ПРОЧИЕ ВИДЫ РАБОТ
+
+        #region Хоздоговорная работа
+
+        /// <summary>
+        /// Добавить хоздоговорную работу.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_AddContractWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var form = IoC.Instance.Resolve<EditContractWorkForm>(
+                   new IoC.NinjectArgument("contractWorkId", 0),
+                   new IoC.NinjectArgument("planId", _planId));
+                form.FormClosed += RefreshContractWorks;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Изменить хоздоговорную работу.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_EditContractWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowsCount = dgvContractWorks.SelectedRows.Count;
+                if (selectedRowsCount != 1)
+                {
+                    throw new Exception("Выберите хоздоговорную работу.");
+                }
+
+                var contractWorkId = (int)dgvContractWorks.SelectedRows[0].Cells[0].Value;
+
+                var form = IoC.Instance.Resolve<EditContractWorkForm>(
+                   new IoC.NinjectArgument("contractWorkId", contractWorkId),
+                   new IoC.NinjectArgument("planId", _planId));
+                form.FormClosed += RefreshContractWorks;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Удалить хоздоговорную работу.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_DeleteContractWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowsCount = dgvContractWorks.SelectedRows.Count;
+                if (selectedRowsCount != 1)
+                {
+                    throw new Exception("Выберите хоздоговорную работу.");
+                }
+
+                var contractWorkId = (int)dgvContractWorks.SelectedRows[0].Cells[0].Value;
+
+                var confirmation = MessageBox.Show("Удалить хоздоговорную работу?", "Подтверждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (confirmation == DialogResult.OK)
+                {
+                    //_contractWorkService.DeleteProfessionalWork(contractWorkId);
+                    RefreshContractWorks();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Обновить список хоздоговорных работ.
+        /// </summary>
+        private void RefreshContractWorks(object sender = null, EventArgs e = null)
+        {
+            dgvContractWorks.Rows.Clear();
+
+            //var works = _contractWorkService.LoadProfessionalWorksByPlan(_planId);
+            //if (!(works?.Any() ?? false))
+            //{
+            //    return;
+            //}
+
+            //foreach (var work in works)
+            //{
+            //    dgvContractWorks.Rows.Add(
+            //        work.ContractWorkId,
+            //        work.Name,
+            //        work.Type,
+            //        work.Volume,
+            //        work.Duty,
+            //        work.Execution,
+            //        work.Comment);
+            //}
+        }
+
+        #endregion
+
+        #region Дополнительная образовательная деятельность 
+
+        /// <summary>
+        /// Добавить дополнительную образовательную деятельность .
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_AddAdditionalWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var form = IoC.Instance.Resolve<EditAdditionalWorkForm>(
+                   new IoC.NinjectArgument("additionalWorkId", 0),
+                   new IoC.NinjectArgument("planId", _planId));
+                form.FormClosed += RefreshAdditionalWorks;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Изменить дополнительную образовательную деятельность.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_EditAdditionalWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowsCount = dgvAdditionalWork.SelectedRows.Count;
+                if (selectedRowsCount != 1)
+                {
+                    throw new Exception("Выберите дополнительную образовательную деятельность.");
+                }
+
+                var additionalWorkId = (int)dgvAdditionalWork.SelectedRows[0].Cells[0].Value;
+
+                var form = IoC.Instance.Resolve<EditAdditionalWorkForm>(
+                   new IoC.NinjectArgument("additionalWorkId", additionalWorkId),
+                   new IoC.NinjectArgument("planId", _planId));
+                form.FormClosed += RefreshAdditionalWorks;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Удалить дополнительную образовательную деятельность.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_DeleteAdditionalWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowsCount = dgvAdditionalWork.SelectedRows.Count;
+                if (selectedRowsCount != 1)
+                {
+                    throw new Exception("Выберите дополнительную образовательную деятельность.");
+                }
+
+                var additionalWorkId = (int)dgvAdditionalWork.SelectedRows[0].Cells[0].Value;
+
+                var confirmation = MessageBox.Show("Удалить дополнительную образовательную деятельность?", "Подтверждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (confirmation == DialogResult.OK)
+                {
+                    //_additionalWorkService.DeleteProfessionalWork(additionalWorkId);
+                    RefreshAdditionalWorks();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Обновить список дополнительных образовательных деятельностей.
+        /// </summary>
+        private void RefreshAdditionalWorks(object sender = null, EventArgs e = null)
+        {
+            dgvAdditionalWork.Rows.Clear();
+
+            //var works = _additionalWorkService.LoadProfessionalWorksByPlan(_planId);
+            //if (!(works?.Any() ?? false))
+            //{
+            //    return;
+            //}
+
+            //foreach (var work in works)
+            //{
+            //    dgvAdditionalWork.Rows.Add(
+            //        work.AdditionalWorkId,
+            //        work.Name,
+            //        work.Students,
+            //        work.Place,
+            //        work.Program,
+            //        work.EducationType,
+            //        work.Volume);
+            //}
+        }
+
+        #endregion
+
+        #region Прочие виды работ 
+
+        /// <summary>
+        /// Добавить прочие виды работ.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_AddOtherWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var form = IoC.Instance.Resolve<EditOtherWorkForm>(
+                   new IoC.NinjectArgument("otherWorkId", 0),
+                   new IoC.NinjectArgument("planId", _planId));
+                form.FormClosed += RefreshOtherWorks;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Изменить прочие виды работ.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_EditOtherWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowsCount = dgvOtherWorks.SelectedRows.Count;
+                if (selectedRowsCount != 1)
+                {
+                    throw new Exception("Выберите прочие виды работ.");
+                }
+
+                var otherWorkId = (int)dgvOtherWorks.SelectedRows[0].Cells[0].Value;
+
+                var form = IoC.Instance.Resolve<EditOtherWorkForm>(
+                   new IoC.NinjectArgument("otherWorkId", otherWorkId),
+                   new IoC.NinjectArgument("planId", _planId));
+                form.FormClosed += RefreshOtherWorks;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Удалить прочие виды работ.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_DeleteOtherWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowsCount = dgvOtherWorks.SelectedRows.Count;
+                if (selectedRowsCount != 1)
+                {
+                    throw new Exception("Выберите прочие виды работ.");
+                }
+
+                var otherWorkId = (int)dgvOtherWorks.SelectedRows[0].Cells[0].Value;
+
+                var confirmation = MessageBox.Show("Удалить прочие виды работ?", "Подтверждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (confirmation == DialogResult.OK)
+                {
+                    //_otherWorkService.DeleteProfessionalWork(otherWorkId);
+                    RefreshOtherWorks();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Обновить список прочих видов работ.
+        /// </summary>
+        private void RefreshOtherWorks(object sender = null, EventArgs e = null)
+        {
+            dgvOtherWorks.Rows.Clear();
+
+            //var works = _otherWorkService.LoadProfessionalWorksByPlan(_planId);
+            //if (!(works?.Any() ?? false))
+            //{
+            //    return;
+            //}
+
+            //foreach (var work in works)
+            //{
+            //    dgvOtherWorks.Rows.Add(
+            //        work.OtherWorkId,
+            //        work.Name,
+            //        work.Date,
+            //        work.Execution);
+            //}
+        }
+
+        #endregion
+
+        #endregion
+
+        #region ВЫПОЛНЕНИЕ ЗАПЛАНИРОВАННОЙ РАБОТЫ 
+
+        /// <summary>
+        /// Добавить запланированную работу.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_AddPlannedWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var form = IoC.Instance.Resolve<EditPlannedWorkForm>(
+                   new IoC.NinjectArgument("plannedWorkId", 0),
+                   new IoC.NinjectArgument("planId", _planId));
+                form.FormClosed += RefreshPlannedWorks;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Изменить запланированную работу.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_EditPlannedWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowsCount = dgvPlannedWorks.SelectedRows.Count;
+                if (selectedRowsCount != 1)
+                {
+                    throw new Exception("Выберите запланированную работу.");
+                }
+
+                var plannedWorkId = (int)dgvPlannedWorks.SelectedRows[0].Cells[0].Value;
+
+                var form = IoC.Instance.Resolve<EditPlannedWorkForm>(
+                   new IoC.NinjectArgument("plannedWorkId", plannedWorkId),
+                   new IoC.NinjectArgument("planId", _planId));
+                form.FormClosed += RefreshPlannedWorks;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Удалить запланированную работу.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_DeletePlannedWork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowsCount = dgvPlannedWorks.SelectedRows.Count;
+                if (selectedRowsCount != 1)
+                {
+                    throw new Exception("Выберите запланированную работу.");
+                }
+
+                var plannedWorkId = (int)dgvPlannedWorks.SelectedRows[0].Cells[0].Value;
+
+                var confirmation = MessageBox.Show("Удалить запланированную работу?", "Подтверждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (confirmation == DialogResult.OK)
+                {
+                    _plannedWorkService.DeletePlannedWork(plannedWorkId);
+                    RefreshPlannedWorks();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Обновить список запланированных работ.
+        /// </summary>
+        private void RefreshPlannedWorks(object sender = null, EventArgs e = null)
+        {
+            dgvPlannedWorks.Rows.Clear();
+
+            var works = _plannedWorkService.LoadPlannedWorksByPlan(_planId);
+            if (!(works?.Any() ?? false))
+            {
+                return;
+            }
+
+            foreach (var work in works)
+            {
+                dgvPlannedWorks.Rows.Add(
+                    work.PlannedWorkId,
+                    work.Name,
+                    work.FirstSemesterPlan,
+                    work.FirstSemesterFact,
+                    work.SecondSemesterPlan,
+                    work.SecondSemesterFact);
             }
         }
 

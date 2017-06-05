@@ -42,6 +42,7 @@ namespace TeacherPlan.Configuration
             kernel.Bind<IPublicationService>().To<PublicationService>().InTransientScope();
             kernel.Bind<ITrainingWorkService>().To<TrainingWorkService>().InTransientScope();
             kernel.Bind<IProfessionalWorkService>().To<ProfessionalWorkService>().InTransientScope();
+            kernel.Bind<IPlannedWorkService>().To<PlannedWorkService>().InTransientScope();
         }
 
         /// <summary>

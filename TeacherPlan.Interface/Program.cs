@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Forms;
 using TeacherPlan.Configuration;
+using TeacherPlan.Interface.Import;
 
 namespace TeacherPlan.Interface
 {
@@ -28,7 +29,7 @@ namespace TeacherPlan.Interface
         /// <param name="kernel">Ядро IoC.</param>
         static void ConfigureInterfaceServices(IKernel kernel)
         {
-            //kernel.Bind<IImportService>().To<DocxImportService>().InTransientScope();
+            kernel.Bind<IImportService>().To<DocxImportService>().InTransientScope();
         }
     }
 }

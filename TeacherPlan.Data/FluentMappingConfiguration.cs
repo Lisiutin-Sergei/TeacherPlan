@@ -26,6 +26,7 @@ namespace TeacherPlan.Data
                 config.AddMap(new PublicationMap());
                 config.AddMap(new TrainingWorkMap());
                 config.AddMap(new ProfessionalWorkMap());
+                config.AddMap(new PlannedWorkMap());
 
                 config.ForDommel();
             });
