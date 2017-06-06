@@ -43,7 +43,12 @@ namespace TeacherPlan.Configuration
             kernel.Bind<ITrainingWorkService>().To<TrainingWorkService>().InTransientScope();
             kernel.Bind<IProfessionalWorkService>().To<ProfessionalWorkService>().InTransientScope();
             kernel.Bind<IPlannedWorkService>().To<PlannedWorkService>().InTransientScope();
-        }
+			kernel.Bind<IDissertationWorkService>().To<DissertationWorkService>().InTransientScope();
+			kernel.Bind<IQualificationWorkService>().To<QualificationWorkService>().InTransientScope();
+			kernel.Bind<IAdditionalWorkService>().To<AdditionalWorkService>().InTransientScope();
+			kernel.Bind<IOtherWorkService>().To<OtherWorkService>().InTransientScope();
+			kernel.Bind<IContractWorkService>().To<ContractWorkService>().InTransientScope();
+		}
 
         /// <summary>
         /// Задать зависимости проекта .Data.

@@ -80,12 +80,37 @@ namespace TeacherPlan.Core.Interface
         /// </summary>
         IPlannedWorkRepository PlannedWorkRepository { get; }
 
-        #endregion
+		/// <summary>
+		/// Репозиторий сущности "Работа над диссертацией".
+		/// </summary>
+		IDissertationWorkRepository DissertationWorkRepository { get; }
 
-        /// <summary>
-        /// Открыть транзакцию.
-        /// </summary>
-        void BeginTransaction();
+		/// <summary>
+		/// Репозиторий сущности "Повышение квалификации".
+		/// </summary>
+		IQualificationWorkRepository QualificationWorkRepository { get; }
+
+		/// <summary>
+		/// Репозиторий сущности "Дополнительная образовательная деятельность".
+		/// </summary>
+		IAdditionalWorkRepository AdditionalWorkRepository { get; }
+
+		/// <summary>
+		/// Репозиторий сущности "Прочие виды работ".
+		/// </summary>
+		IOtherWorkRepository OtherWorkRepository { get; }
+
+		/// <summary>
+		/// Репозиторий сущности "Хоздоговорная работа".
+		/// </summary>
+		IContractWorkRepository ContractWorkRepository { get; }
+
+		#endregion
+
+		/// <summary>
+		/// Открыть транзакцию.
+		/// </summary>
+		void BeginTransaction();
 
         /// <summary>
         /// Подтвердить транзакцию, если она открыта.

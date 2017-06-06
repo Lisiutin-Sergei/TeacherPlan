@@ -91,6 +91,12 @@
     <Compile Include="EditContractWorkForm.Designer.cs">
       <DependentUpon>EditContractWorkForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditDissertationWorkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditDissertationWorkForm.Designer.cs">
+      <DependentUpon>EditDissertationWorkForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditEducationalWorkForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,6 +138,12 @@
     </Compile>
     <Compile Include="EditPublicationForm.Designer.cs">
       <DependentUpon>EditPublicationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditQualificationWorkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditQualificationWorkForm.Designer.cs">
+      <DependentUpon>EditQualificationWorkForm.cs</DependentUpon>
     </Compile>
     <Compile Include="EditScienceGroupForm.cs">
       <SubType>Form</SubType>
@@ -203,6 +215,9 @@
     <EmbeddedResource Include="EditContractWorkForm.resx">
       <DependentUpon>EditContractWorkForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EditDissertationWorkForm.resx">
+      <DependentUpon>EditDissertationWorkForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditEducationalWorkForm.resx">
       <DependentUpon>EditEducationalWorkForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -223,6 +238,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditPublicationForm.resx">
       <DependentUpon>EditPublicationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditQualificationWorkForm.resx">
+      <DependentUpon>EditQualificationWorkForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditScienceGroupForm.resx">
       <DependentUpon>EditScienceGroupForm.cs</DependentUpon>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using TeacherPlan.Core.Interface.Service;
+using TeacherPlan.Core.Model.Domain;
 
 namespace TeacherPlan.Interface
 {
@@ -19,24 +20,24 @@ namespace TeacherPlan.Interface
         /// </summary>
         private readonly int _additionalWorkId;
 
-        #region Сервисы
+		#region Сервисы
 
-        //private readonly IAdditionalWorkService _additionalWorkService;
+		private readonly IAdditionalWorkService _additionalWorkService;
 
-        #endregion
+		#endregion
 
-        public EditAdditionalWorkForm(
+		public EditAdditionalWorkForm(
             int additionalWorkId,
             int planId,
-            ITrainingWorkService additionalWorkService)
+			IAdditionalWorkService additionalWorkService)
         {
             InitializeComponent();
 
             _additionalWorkId = additionalWorkId;
             _planId = planId;
 
-            //_additionalWorkService = additionalWorkService;
-        }
+			_additionalWorkService = additionalWorkService;
+		}
 
         /// <summary>
         /// При загрузке формы.
@@ -47,18 +48,18 @@ namespace TeacherPlan.Interface
             {
                 var isEdit = _additionalWorkId > 0;
 
-                //if (isEdit)
-                //{
-                //    var entity = _additionalWorkService.GetTrainingWorkById(_additionalWorkId);
+				if (isEdit)
+				{
+					var entity = _additionalWorkService.GetAdditionalWorkById(_additionalWorkId);
 
-                //    tbName.Text = entity.Name;
-                //    tbStudents.Text = entity.Students;
-                //    tbPlace.Text = entity.Place;
-                //    tbProgram.Text = entity.Program;
-                //    tbEducationType.Text = entity.EducationType;
-                //    numVolume.Value = (decimal?)entity.Volume ?? 0;
-                //}
-            }
+					tbName.Text = entity.Name;
+					tbStudents.Text = entity.Students;
+					tbPlace.Text = entity.Place;
+					tbProgram.Text = entity.Program;
+					tbEducationType.Text = entity.EducationType;
+					numVolume.Value = (decimal?)entity.Volume ?? 0;
+				}
+			}
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -74,20 +75,20 @@ namespace TeacherPlan.Interface
         {
             try
             {
-                //var entity = new AdditionalWork
-                //{
-                //    AdditionalWorkId = _additionalWorkId,
-                //    PlanId = _planId,
-                //    Name = tbName.Text,
-                //    Students = tbStudents.Text,
-                //    Place = tbPlace.Text,
-                //    Program = tbProgram.Text,
-                //    EducationType = tbEducationType.Text,
-                //    Volume = numVolume.Value == 0 ? null : (double?)numVolume.Value
-                //};
-                //_additionalWorkService.SaveTrainingWork(entity);
+				var entity = new AdditionalWork
+				{
+					AdditionalWorkId = _additionalWorkId,
+					PlanId = _planId,
+					Name = tbName.Text,
+					Students = tbStudents.Text,
+					Place = tbPlace.Text,
+					Program = tbProgram.Text,
+					EducationType = tbEducationType.Text,
+					Volume = numVolume.Value == 0 ? null : (double?)numVolume.Value
+				};
+				_additionalWorkService.SaveAdditionalWork(entity);
 
-                DialogResult = DialogResult.OK;
+				DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)

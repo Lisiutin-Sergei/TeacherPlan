@@ -38,10 +38,15 @@ namespace TeacherPlan.Interface.Import
         private readonly ITrainingWorkService _trainingWorkService;
         private readonly IProfessionalWorkService _professionalWorkService;
         private readonly IPlannedWorkService _plannedWorkService;
+		private readonly IDissertationWorkService _dissertationWorkService;
+		private readonly IQualificationWorkService _qualificationWorkService;
+		private readonly IAdditionalWorkService _additionalWorkService;
+		private readonly IOtherWorkService _otherWorkService;
+		private readonly IContractWorkService _contractWorkService;
 
-        #endregion
+		#endregion
 
-        public DocxImportService(
+		public DocxImportService(
             IUserService userService,
             IPlanService planService,
             IEducationalWorkService educationalWorkService,
@@ -54,7 +59,12 @@ namespace TeacherPlan.Interface.Import
             IPublicationService publicationService,
             ITrainingWorkService trainingWorkService,
             IProfessionalWorkService professionalWorkService,
-            IPlannedWorkService plannedWorkService)
+			IDissertationWorkService dissertationWorkService,
+			IQualificationWorkService qualificationWorkService,
+			IAdditionalWorkService additionalWorkService,
+			IOtherWorkService otherWorkService,
+			IContractWorkService contractWorkService,
+			IPlannedWorkService plannedWorkService)
         {
             _userService = userService;
             _planService = planService;
@@ -69,7 +79,12 @@ namespace TeacherPlan.Interface.Import
             _trainingWorkService = trainingWorkService;
             _professionalWorkService = professionalWorkService;
             _plannedWorkService = plannedWorkService;
-        }
+			_dissertationWorkService = dissertationWorkService;
+			_qualificationWorkService = qualificationWorkService;
+			_additionalWorkService = additionalWorkService;
+			_otherWorkService = otherWorkService;
+			_contractWorkService = contractWorkService;
+		}
 
         /// <summary>
         /// Импортировать план в word документ.
@@ -98,9 +113,12 @@ namespace TeacherPlan.Interface.Import
                 ProcessPublication(document, planId);
                 ProcessTrainingWork(document, planId);
                 ProcessProfessionalWork(document, planId);
-                ProcessProfessionalWork(document, planId);
-
-                ProcessPlannedWork(document, planId);
+				ProcessDissertationWork(document, planId);
+				ProcessQualificationWork(document, planId);
+				ProcessAdditionalWork(document, planId);
+				ProcessContractWork(document, planId);
+				ProcessOtherWork(document, planId);
+				ProcessPlannedWork(document, planId);
 
                 // Сформировать директорию сохранения и сохранить
                 var resultFileDirectory = new DirectoryInfo(Path.Combine(_resourcesDirectory, user.UserId.ToString()));
@@ -986,16 +1004,351 @@ namespace TeacherPlan.Interface.Import
                 .FontSize(11).Font(new FontFamily("Times New Roman"));
         }
 
-        #endregion
+		#endregion
 
-        #region ВЫПОЛНЕНИЕ ЗАПЛАНИРОВАННОЙ РАБОТЫ
+		#region ПОВЫШЕНИЕ ПРЕПОДАВАТЕЛЬСКОГО МАСТЕРСТВА
 
-        /// <summary>
-        /// Обработать работу.
-        /// </summary>
-        /// <param name="document">Документ.</param>
-        /// <param name="planId">Идентификатор плана.</param>
-        private void ProcessPlannedWork(DocX document, int planId)
+		#region Работа над диссертацией
+
+		/// <summary>
+		/// Обработать работу.
+		/// </summary>
+		/// <param name="document">Документ.</param>
+		/// <param name="planId">Идентификатор плана.</param>
+		private void ProcessDissertationWork(DocX document, int planId)
+		{
+			var table = document.Tables[12];
+			var startEmptyIndex = 1;
+			var emptyLinesCount = 4;
+
+			var works = _dissertationWorkService.LoadDissertationWorksByPlan(planId);
+			if (!(works?.Any() ?? false))
+			{
+				return;
+			}
+
+			for (int workIndex = 0; workIndex < works.Count; workIndex++)
+			{
+				var currentWork = works[workIndex];
+
+				// Выбираем предыдущую строку
+				var requiredIndex = workIndex + startEmptyIndex;
+				var currentRow = workIndex > emptyLinesCount
+					? table.InsertRow(table.Rows[startEmptyIndex], requiredIndex)
+					: table.Rows[requiredIndex];
+
+				// Заполняем строку данными. Причем название показателя только у 1 строки.
+				FillWorkRow(currentRow, currentWork);
+			}
+
+			FillWorkAllRow(table.Rows[table.Rows.Count - 1], works);
+		}
+
+		/// <summary>
+		/// Заполнить строку таблицы.
+		/// </summary>
+		/// <param name="row">Строка таблицы.</param>
+		/// <param name="work">Сущность.</param>
+		private void FillWorkRow(Row row, DissertationWork work)
+		{
+			ClearRow(row, 0, 2);
+
+			row.Cells[0].Paragraphs.First().Append(work.Name ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[1].Paragraphs.First().Append(work.Date ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[2].Paragraphs.First().Append(work.Execution ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+		}
+
+		/// <summary>
+		/// Заполнить сумму строки.
+		/// </summary>
+		/// <param name="row"></param>
+		/// <param name="works"></param>
+		private void FillWorkAllRow(Row row, List<DissertationWork> works)
+		{
+			ClearRow(row, 1, 1);
+
+			row.Cells[1].Paragraphs.First()
+				.Append(works
+					.Sum(e => e.Hours ?? 0)
+					.ToString() ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+		}
+
+		#endregion
+
+		#region Повышение квалификации
+
+		/// <summary>
+		/// Обработать работу.
+		/// </summary>
+		/// <param name="document">Документ.</param>
+		/// <param name="planId">Идентификатор плана.</param>
+		private void ProcessQualificationWork(DocX document, int planId)
+		{
+			var table = document.Tables[13];
+			var startEmptyIndex = 1;
+			var emptyLinesCount = 2;
+
+			var works = _qualificationWorkService.LoadQualificationWorksByPlan(planId);
+			if (!(works?.Any() ?? false))
+			{
+				return;
+			}
+
+			for (int workIndex = 0; workIndex < works.Count; workIndex++)
+			{
+				var currentWork = works[workIndex];
+
+				// Выбираем предыдущую строку
+				var requiredIndex = workIndex + startEmptyIndex;
+				var currentRow = workIndex > emptyLinesCount
+					? table.InsertRow(table.Rows[startEmptyIndex], requiredIndex)
+					: table.Rows[requiredIndex];
+
+				// Заполняем строку данными. Причем название показателя только у 1 строки.
+				FillWorkRow(currentRow, currentWork, workIndex + 1);
+			}
+
+			FillWorkAllRow(table.Rows[table.Rows.Count - 1], works);
+		}
+
+		/// <summary>
+		/// Заполнить строку таблицы.
+		/// </summary>
+		/// <param name="row">Строка таблицы.</param>
+		/// <param name="work">Сущность.</param>
+		private void FillWorkRow(Row row, QualificationWork work, int counter)
+		{
+			ClearRow(row, 0, 6);
+
+			row.Cells[0].Paragraphs.First().Append(counter.ToString() ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[1].Paragraphs.First().Append(work.CourseType ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[2].Paragraphs.First().Append(work.CourseName ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[3].Paragraphs.First().Append(work.CourseVolume?.ToString() ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[4].Paragraphs.First().Append(work.Place ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[5].Paragraphs.First().Append(work.Date ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[6].Paragraphs.First().Append(work.Execution ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+		}
+
+		/// <summary>
+		/// Заполнить сумму строки.
+		/// </summary>
+		/// <param name="row"></param>
+		/// <param name="works"></param>
+		private void FillWorkAllRow(Row row, List<QualificationWork> works)
+		{
+			ClearRow(row, 2, 2);
+
+			row.Cells[2].Paragraphs.First()
+				.Append(works
+					.Sum(e => e.CourseVolume ?? 0)
+					.ToString() ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+		}
+
+		#endregion
+
+		#endregion
+
+		#region ПРОЧИЕ ВИДЫ РАБОТ
+
+		#region Хоздоговорная работа
+
+		/// <summary>
+		/// Обработать работу.
+		/// </summary>
+		/// <param name="document">Документ.</param>
+		/// <param name="planId">Идентификатор плана.</param>
+		private void ProcessContractWork(DocX document, int planId)
+		{
+			var table = document.Tables[14];
+			var startEmptyIndex = 1;
+			var emptyLinesCount = 7;
+
+			var works = _contractWorkService.LoadContractWorksByPlan(planId);
+			if (!(works?.Any() ?? false))
+			{
+				return;
+			}
+
+			for (int workIndex = 0; workIndex < works.Count; workIndex++)
+			{
+				var currentWork = works[workIndex];
+
+				// Выбираем предыдущую строку
+				var requiredIndex = workIndex + startEmptyIndex;
+				var currentRow = workIndex > emptyLinesCount
+					? table.InsertRow(table.Rows[startEmptyIndex], requiredIndex)
+					: table.Rows[requiredIndex];
+
+				// Заполняем строку данными. Причем название показателя только у 1 строки.
+				FillWorkRow(currentRow, currentWork, workIndex + 1);
+			}
+		}
+
+		/// <summary>
+		/// Заполнить строку таблицы.
+		/// </summary>
+		/// <param name="row">Строка таблицы.</param>
+		/// <param name="work">Сущность.</param>
+		private void FillWorkRow(Row row, ContractWork work, int counter)
+		{
+			ClearRow(row, 0, 6);
+
+			row.Cells[0].Paragraphs.First().Append(counter.ToString() ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[1].Paragraphs.First().Append(work.Name ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[2].Paragraphs.First().Append(work.Type ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[3].Paragraphs.First().Append(work.Volume?.ToString() ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[4].Paragraphs.First().Append(work.Duty ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[5].Paragraphs.First().Append(work.Execution ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[6].Paragraphs.First().Append(work.Comment ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+		}
+
+		#endregion
+
+		#region Дополнительная образовательная деятельность
+
+		/// <summary>
+		/// Обработать работу.
+		/// </summary>
+		/// <param name="document">Документ.</param>
+		/// <param name="planId">Идентификатор плана.</param>
+		private void ProcessAdditionalWork(DocX document, int planId)
+		{
+			var table = document.Tables[15];
+			var startEmptyIndex = 1;
+			var emptyLinesCount = 6;
+
+			var works = _additionalWorkService.LoadAdditionalWorksByPlan(planId);
+			if (!(works?.Any() ?? false))
+			{
+				return;
+			}
+
+			for (int workIndex = 0; workIndex < works.Count; workIndex++)
+			{
+				var currentWork = works[workIndex];
+
+				// Выбираем предыдущую строку
+				var requiredIndex = workIndex + startEmptyIndex;
+				var currentRow = workIndex > emptyLinesCount
+					? table.InsertRow(table.Rows[startEmptyIndex], requiredIndex)
+					: table.Rows[requiredIndex];
+
+				// Заполняем строку данными. Причем название показателя только у 1 строки.
+				FillWorkRow(currentRow, currentWork, workIndex + 1);
+			}
+		}
+
+		/// <summary>
+		/// Заполнить строку таблицы.
+		/// </summary>
+		/// <param name="row">Строка таблицы.</param>
+		/// <param name="work">Сущность.</param>
+		private void FillWorkRow(Row row, AdditionalWork work, int counter)
+		{
+			ClearRow(row, 0, 6);
+
+			row.Cells[0].Paragraphs.First().Append(counter.ToString() ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[1].Paragraphs.First().Append(work.Name ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[2].Paragraphs.First().Append(work.Students ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[3].Paragraphs.First().Append(work.Place ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[4].Paragraphs.First().Append(work.Program ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[5].Paragraphs.First().Append(work.EducationType ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[6].Paragraphs.First().Append(work.Volume?.ToString() ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+		}
+
+		#endregion
+
+		#region Выполнение общественных поручений, прочие виды работ 
+
+		/// <summary>
+		/// Обработать работу.
+		/// </summary>
+		/// <param name="document">Документ.</param>
+		/// <param name="planId">Идентификатор плана.</param>
+		private void ProcessOtherWork(DocX document, int planId)
+		{
+			var table = document.Tables[16];
+			var startEmptyIndex = 1;
+			var emptyLinesCount = 5;
+
+			var works = _otherWorkService.LoadOtherWorksByPlan(planId);
+			if (!(works?.Any() ?? false))
+			{
+				return;
+			}
+
+			for (int workIndex = 0; workIndex < works.Count; workIndex++)
+			{
+				var currentWork = works[workIndex];
+
+				// Выбираем предыдущую строку
+				var requiredIndex = workIndex + startEmptyIndex;
+				var currentRow = workIndex > emptyLinesCount
+					? table.InsertRow(table.Rows[startEmptyIndex], requiredIndex)
+					: table.Rows[requiredIndex];
+
+				// Заполняем строку данными. Причем название показателя только у 1 строки.
+				FillWorkRow(currentRow, currentWork, workIndex + 1);
+			}
+		}
+
+		/// <summary>
+		/// Заполнить строку таблицы.
+		/// </summary>
+		/// <param name="row">Строка таблицы.</param>
+		/// <param name="work">Сущность.</param>
+		private void FillWorkRow(Row row, OtherWork work, int counter)
+		{
+			ClearRow(row, 0, 3);
+
+			row.Cells[0].Paragraphs.First().Append(counter.ToString() ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[1].Paragraphs.First().Append(work.Name ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[2].Paragraphs.First().Append(work.Date ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+			row.Cells[3].Paragraphs.First().Append(work.Execution ?? string.Empty)
+				.FontSize(11).Font(new FontFamily("Times New Roman"));
+		}
+
+		#endregion
+
+		#endregion
+
+		#region ВЫПОЛНЕНИЕ ЗАПЛАНИРОВАННОЙ РАБОТЫ
+
+		/// <summary>
+		/// Обработать работу.
+		/// </summary>
+		/// <param name="document">Документ.</param>
+		/// <param name="planId">Идентификатор плана.</param>
+		private void ProcessPlannedWork(DocX document, int planId)
         {
             var table = document.Tables[17];
             var startEmptyIndex = 2;

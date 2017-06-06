@@ -27,8 +27,13 @@ namespace TeacherPlan.Data
                 config.AddMap(new TrainingWorkMap());
                 config.AddMap(new ProfessionalWorkMap());
                 config.AddMap(new PlannedWorkMap());
+				config.AddMap(new DissertationWorkMap());
+				config.AddMap(new QualificationWorkMap());
+				config.AddMap(new ContractWorkMap());
+				config.AddMap(new AdditionalWorkMap());
+				config.AddMap(new OtherWorkMap());
 
-                config.ForDommel();
+				config.ForDommel();
             });
         }
     }

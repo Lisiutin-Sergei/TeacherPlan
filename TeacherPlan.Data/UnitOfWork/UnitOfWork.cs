@@ -91,14 +91,39 @@ namespace TeacherPlan.Data.UnitOfWork
         /// </summary>
         public IPlannedWorkRepository PlannedWorkRepository => new PlannedWorkRepository(_dataContext.Value);
 
-        #endregion
+		/// <summary>
+		/// Репозиторий сущности "Работа над диссертацией".
+		/// </summary>
+		public IDissertationWorkRepository DissertationWorkRepository => new DissertationWorkRepository(_dataContext.Value);
 
-        /// <summary>
-        /// Конструктор единицы работы.
-        /// </summary>
-        /// <param name="configuration">Конфигурация запускаемого проекта. 
-        /// Должен быть заполнен узел для строки подключения к базе данных (<see cref="_CONNECTION_STRING_NAME"/>).</param>
-        public UnitOfWork(IConfiguration configuration)
+		/// <summary>
+		/// Репозиторий сущности "Повышение квалификации".
+		/// </summary>
+		public IQualificationWorkRepository QualificationWorkRepository => new QualificationWorkRepository(_dataContext.Value);
+
+		/// <summary>
+		/// Репозиторий сущности "Хоздоговорная работа".
+		/// </summary>
+		public IContractWorkRepository ContractWorkRepository => new ContractWorkRepository(_dataContext.Value);
+
+		/// <summary>
+		/// Репозиторий сущности "Прочие виды работ".
+		/// </summary>
+		public IOtherWorkRepository OtherWorkRepository => new OtherWorkRepository(_dataContext.Value);
+
+		/// <summary>
+		/// Репозиторий сущности "Дополнительная образовательная деятельность".
+		/// </summary>
+		public IAdditionalWorkRepository AdditionalWorkRepository => new AdditionalWorkRepository(_dataContext.Value);
+
+		#endregion
+
+		/// <summary>
+		/// Конструктор единицы работы.
+		/// </summary>
+		/// <param name="configuration">Конфигурация запускаемого проекта. 
+		/// Должен быть заполнен узел для строки подключения к базе данных (<see cref="_CONNECTION_STRING_NAME"/>).</param>
+		public UnitOfWork(IConfiguration configuration)
         {
             _dataContext = new Lazy<DataContext>(() => _CreateDataContext(configuration), true);
         }

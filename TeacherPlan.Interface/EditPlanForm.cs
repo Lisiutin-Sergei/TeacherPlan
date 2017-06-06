@@ -43,12 +43,17 @@ namespace TeacherPlan.Interface
         private readonly IPublicationService _publicationService;
         private readonly ITrainingWorkService _trainingWorkService;
         private readonly IProfessionalWorkService _professionalWorkService;
-        private readonly IPlannedWorkService _plannedWorkService;
+		private readonly IDissertationWorkService _dissertationWorkService;
+		private readonly IQualificationWorkService _qualificationWorkService;
+		private readonly IPlannedWorkService _plannedWorkService;
         private readonly IImportService _importService;
+		private readonly IAdditionalWorkService _additionalWorkService;
+		private readonly IOtherWorkService _otherWorkService;
+		private readonly IContractWorkService _contractWorkService;
 
-        #endregion
+		#endregion
 
-        public EditPlanForm(
+		public EditPlanForm(
             int userId,
             int planId,
             IUserService userService,
@@ -63,7 +68,12 @@ namespace TeacherPlan.Interface
             IPublicationService publicationService,
             ITrainingWorkService trainingWorkService,
             IProfessionalWorkService professionalWorkService,
-            IPlannedWorkService plannedWorkService,
+			IDissertationWorkService dissertationWorkService,
+			IQualificationWorkService qualificationWorkService,
+			IAdditionalWorkService additionalWorkService,
+			IOtherWorkService otherWorkService,
+			IContractWorkService contractWorkService,
+			IPlannedWorkService plannedWorkService,
             IImportService importService)
         {
             InitializeComponent();
@@ -85,7 +95,12 @@ namespace TeacherPlan.Interface
             _trainingWorkService = trainingWorkService;
             _professionalWorkService = professionalWorkService;
             _plannedWorkService = plannedWorkService;
-        }
+			_dissertationWorkService = dissertationWorkService;
+			_qualificationWorkService = qualificationWorkService;
+			_additionalWorkService = additionalWorkService;
+			_otherWorkService = otherWorkService;
+			_contractWorkService = contractWorkService;
+		}
 
         #region Обработчики событий
 
@@ -124,7 +139,9 @@ namespace TeacherPlan.Interface
                     RefreshAdditionalWorks();
                     RefreshOtherWorks();
                     RefreshPlannedWorks();
-                }
+					RefreshDissertationWorks();
+					RefreshQualificationWorks();
+				}
                 else
                 {
                     tbPlanName.Text = "ИНДИВИДУАЛЬНЫЙ ПЛАН РАБОТЫ";
@@ -1339,18 +1356,239 @@ namespace TeacherPlan.Interface
             }
         }
 
-        #endregion
+		#endregion
 
-        #region ПРОЧИЕ ВИДЫ РАБОТ
+		#region ПОВЫШЕНИЕ ПРЕПОДАВАТЕЛЬСКОГО МАСТЕРСТВА
 
-        #region Хоздоговорная работа
+		#region Работа над диссертацией
 
-        /// <summary>
-        /// Добавить хоздоговорную работу.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Btn_AddContractWork_Click(object sender, EventArgs e)
+		/// <summary>
+		/// Добавить работу над диссертацией.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Btn_AddDissertationWork_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				var form = IoC.Instance.Resolve<EditDissertationWorkForm>(
+				   new IoC.NinjectArgument("dissertationWorkId", 0),
+				   new IoC.NinjectArgument("planId", _planId));
+				form.FormClosed += RefreshDissertationWorks;
+				form.ShowDialog();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		/// <summary>
+		/// Изменить работу над диссертацией.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Btn_EditDissertationWork_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				var selectedRowsCount = dgvDissertationWorks.SelectedRows.Count;
+				if (selectedRowsCount != 1)
+				{
+					throw new Exception("Выберите работу над диссертацией.");
+				}
+
+				var dissertationWorkId = (int)dgvDissertationWorks.SelectedRows[0].Cells[0].Value;
+
+				var form = IoC.Instance.Resolve<EditDissertationWorkForm>(
+				   new IoC.NinjectArgument("dissertationWorkId", dissertationWorkId),
+				   new IoC.NinjectArgument("planId", _planId));
+				form.FormClosed += RefreshDissertationWorks;
+				form.ShowDialog();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		/// <summary>
+		/// Удалить работу над диссертацией.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Btn_DeleteDissertationWork_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				var selectedRowsCount = dgvDissertationWorks.SelectedRows.Count;
+				if (selectedRowsCount != 1)
+				{
+					throw new Exception("Выберите работу над диссертацией.");
+				}
+
+				var dissertationWorkId = (int)dgvDissertationWorks.SelectedRows[0].Cells[0].Value;
+
+				var confirmation = MessageBox.Show("Удалить работу над диссертацией?", "Подтверждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+				if (confirmation == DialogResult.OK)
+				{
+					_dissertationWorkService.DeleteDissertationWork(dissertationWorkId);
+					RefreshDissertationWorks();
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		/// <summary>
+		/// Обновить список работ над диссертацией.
+		/// </summary>
+		private void RefreshDissertationWorks(object sender = null, EventArgs e = null)
+		{
+			dgvDissertationWorks.Rows.Clear();
+
+			var works = _dissertationWorkService.LoadDissertationWorksByPlan(_planId);
+			if (!(works?.Any() ?? false))
+			{
+				return;
+			}
+
+			foreach (var work in works)
+			{
+				dgvDissertationWorks.Rows.Add(
+					work.DissertationWorkId,
+					work.Name,
+					work.Date,
+					work.Execution);
+			}
+		}
+
+		#endregion Работа над диссертацией
+
+		#region Повышение квалификации, стажировка и переподготовка
+
+		/// <summary>
+		/// Добавить повышение квалификации.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Btn_AddQualificationWork_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				var form = IoC.Instance.Resolve<EditQualificationWorkForm>(
+				   new IoC.NinjectArgument("qualificationWorkId", 0),
+				   new IoC.NinjectArgument("planId", _planId));
+				form.FormClosed += RefreshQualificationWorks;
+				form.ShowDialog();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		/// <summary>
+		/// Изменить повышение квалификации.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Btn_EditQualificationWork_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				var selectedRowsCount = dgvQualification.SelectedRows.Count;
+				if (selectedRowsCount != 1)
+				{
+					throw new Exception("Выберите повышение квалификации.");
+				}
+
+				var qualificationWorkId = (int)dgvQualification.SelectedRows[0].Cells[0].Value;
+
+				var form = IoC.Instance.Resolve<EditQualificationWorkForm>(
+				   new IoC.NinjectArgument("qualificationWorkId", qualificationWorkId),
+				   new IoC.NinjectArgument("planId", _planId));
+				form.FormClosed += RefreshQualificationWorks;
+				form.ShowDialog();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		/// <summary>
+		/// Удалить повышение квалификации.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Btn_DeleteQualificationWork_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				var selectedRowsCount = dgvQualification.SelectedRows.Count;
+				if (selectedRowsCount != 1)
+				{
+					throw new Exception("Выберите повышение квалификации.");
+				}
+
+				var qualificationWorkId = (int)dgvQualification.SelectedRows[0].Cells[0].Value;
+
+				var confirmation = MessageBox.Show("Удалить повышение квалификации?", "Подтверждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+				if (confirmation == DialogResult.OK)
+				{
+					_qualificationWorkService.DeleteQualificationWork(qualificationWorkId);
+					RefreshQualificationWorks();
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		/// <summary>
+		/// Обновить список повышений квалификации.
+		/// </summary>
+		private void RefreshQualificationWorks(object sender = null, EventArgs e = null)
+		{
+			dgvQualification.Rows.Clear();
+
+			var works = _qualificationWorkService.LoadQualificationWorksByPlan(_planId);
+			if (!(works?.Any() ?? false))
+			{
+				return;
+			}
+
+			foreach (var work in works)
+			{
+				dgvQualification.Rows.Add(
+					work.QualificationWorkId,
+					work.CourseType,
+					work.CourseName,
+					work.CourseVolume,
+					work.Place,
+					work.Date,
+					work.Execution);
+			}
+		}
+
+		#endregion Работа над диссертацией
+
+		#endregion
+
+		#region ПРОЧИЕ ВИДЫ РАБОТ
+
+		#region Хоздоговорная работа
+
+		/// <summary>
+		/// Добавить хоздоговорную работу.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Btn_AddContractWork_Click(object sender, EventArgs e)
         {
             try
             {
@@ -1415,8 +1653,8 @@ namespace TeacherPlan.Interface
                 var confirmation = MessageBox.Show("Удалить хоздоговорную работу?", "Подтверждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                 if (confirmation == DialogResult.OK)
                 {
-                    //_contractWorkService.DeleteProfessionalWork(contractWorkId);
-                    RefreshContractWorks();
+					_contractWorkService.DeleteContractWork(contractWorkId);
+					RefreshContractWorks();
                 }
             }
             catch (Exception ex)
@@ -1432,24 +1670,24 @@ namespace TeacherPlan.Interface
         {
             dgvContractWorks.Rows.Clear();
 
-            //var works = _contractWorkService.LoadProfessionalWorksByPlan(_planId);
-            //if (!(works?.Any() ?? false))
-            //{
-            //    return;
-            //}
+			var works = _contractWorkService.LoadContractWorksByPlan(_planId);
+			if (!(works?.Any() ?? false))
+			{
+				return;
+			}
 
-            //foreach (var work in works)
-            //{
-            //    dgvContractWorks.Rows.Add(
-            //        work.ContractWorkId,
-            //        work.Name,
-            //        work.Type,
-            //        work.Volume,
-            //        work.Duty,
-            //        work.Execution,
-            //        work.Comment);
-            //}
-        }
+			foreach (var work in works)
+			{
+				dgvContractWorks.Rows.Add(
+					work.ContractWorkId,
+					work.Name,
+					work.Type,
+					work.Volume,
+					work.Duty,
+					work.Execution,
+					work.Comment);
+			}
+		}
 
         #endregion
 
@@ -1525,8 +1763,8 @@ namespace TeacherPlan.Interface
                 var confirmation = MessageBox.Show("Удалить дополнительную образовательную деятельность?", "Подтверждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                 if (confirmation == DialogResult.OK)
                 {
-                    //_additionalWorkService.DeleteProfessionalWork(additionalWorkId);
-                    RefreshAdditionalWorks();
+					_additionalWorkService.DeleteAdditionalWork(additionalWorkId);
+					RefreshAdditionalWorks();
                 }
             }
             catch (Exception ex)
@@ -1542,24 +1780,24 @@ namespace TeacherPlan.Interface
         {
             dgvAdditionalWork.Rows.Clear();
 
-            //var works = _additionalWorkService.LoadProfessionalWorksByPlan(_planId);
-            //if (!(works?.Any() ?? false))
-            //{
-            //    return;
-            //}
+			var works = _additionalWorkService.LoadAdditionalWorksByPlan(_planId);
+			if (!(works?.Any() ?? false))
+			{
+				return;
+			}
 
-            //foreach (var work in works)
-            //{
-            //    dgvAdditionalWork.Rows.Add(
-            //        work.AdditionalWorkId,
-            //        work.Name,
-            //        work.Students,
-            //        work.Place,
-            //        work.Program,
-            //        work.EducationType,
-            //        work.Volume);
-            //}
-        }
+			foreach (var work in works)
+			{
+				dgvAdditionalWork.Rows.Add(
+					work.AdditionalWorkId,
+					work.Name,
+					work.Students,
+					work.Place,
+					work.Program,
+					work.EducationType,
+					work.Volume);
+			}
+		}
 
         #endregion
 
@@ -1635,8 +1873,8 @@ namespace TeacherPlan.Interface
                 var confirmation = MessageBox.Show("Удалить прочие виды работ?", "Подтверждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                 if (confirmation == DialogResult.OK)
                 {
-                    //_otherWorkService.DeleteProfessionalWork(otherWorkId);
-                    RefreshOtherWorks();
+					_otherWorkService.DeleteOtherWork(otherWorkId);
+					RefreshOtherWorks();
                 }
             }
             catch (Exception ex)
@@ -1652,21 +1890,21 @@ namespace TeacherPlan.Interface
         {
             dgvOtherWorks.Rows.Clear();
 
-            //var works = _otherWorkService.LoadProfessionalWorksByPlan(_planId);
-            //if (!(works?.Any() ?? false))
-            //{
-            //    return;
-            //}
+			var works = _otherWorkService.LoadOtherWorksByPlan(_planId);
+			if (!(works?.Any() ?? false))
+			{
+				return;
+			}
 
-            //foreach (var work in works)
-            //{
-            //    dgvOtherWorks.Rows.Add(
-            //        work.OtherWorkId,
-            //        work.Name,
-            //        work.Date,
-            //        work.Execution);
-            //}
-        }
+			foreach (var work in works)
+			{
+				dgvOtherWorks.Rows.Add(
+					work.OtherWorkId,
+					work.Name,
+					work.Date,
+					work.Execution);
+			}
+		}
 
         #endregion
 

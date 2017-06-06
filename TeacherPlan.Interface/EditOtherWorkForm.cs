@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using TeacherPlan.Core.Interface.Service;
+using TeacherPlan.Core.Model.Domain;
 
 namespace TeacherPlan.Interface
 {
@@ -19,24 +20,24 @@ namespace TeacherPlan.Interface
         /// </summary>
         private readonly int _otherWorkId;
 
-        #region Сервисы
+		#region Сервисы
 
-        //private readonly IOtherWorkService _otherWorkService;
+		private readonly IOtherWorkService _otherWorkService;
 
-        #endregion
+		#endregion
 
-        public EditOtherWorkForm(
+		public EditOtherWorkForm(
             int otherWorkId,
             int planId,
-            ITrainingWorkService otherWorkService)
+			IOtherWorkService otherWorkService)
         {
             InitializeComponent();
 
             _otherWorkId = otherWorkId;
             _planId = planId;
 
-            //_otherWorkService = otherWorkService;
-        }
+			_otherWorkService = otherWorkService;
+		}
 
         /// <summary>
         /// При загрузке формы.
@@ -49,12 +50,12 @@ namespace TeacherPlan.Interface
 
                 if (isEdit)
                 {
-                    //    var entity = _otherWorkService.GetTrainingWorkById(_otherWorkId);
+					var entity = _otherWorkService.GetOtherWorkById(_otherWorkId);
 
-                    //    tbName.Text = entity.Name;
-                    //    tbDate.Text = entity.Date;
-                    //    tbExecution.Text = entity.Execution;
-                }
+					tbName.Text = entity.Name;
+					tbDate.Text = entity.Date;
+					tbExecution.Text = entity.Execution;
+				}
             }
             catch (Exception ex)
             {
@@ -71,17 +72,17 @@ namespace TeacherPlan.Interface
         {
             try
             {
-                //var entity = new OtherWork
-                //{
-                //    OtherWorkId = _otherWorkId,
-                //    PlanId = _planId,
-                //    Name = tbName.Text,
-                //    Date = tbDate.Text,
-                //    Execution = tbExecution.Text
-                //};
-                //_otherWorkService.SaveTrainingWork(entity);
+				var entity = new OtherWork
+				{
+					OtherWorkId = _otherWorkId,
+					PlanId = _planId,
+					Name = tbName.Text,
+					Date = tbDate.Text,
+					Execution = tbExecution.Text
+				};
+				_otherWorkService.SaveOtherWork(entity);
 
-                DialogResult = DialogResult.OK;
+				DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)

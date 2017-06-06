@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using TeacherPlan.Core.Interface.Service;
+using TeacherPlan.Core.Model.Domain;
 
 namespace TeacherPlan.Interface
 {
@@ -19,24 +20,24 @@ namespace TeacherPlan.Interface
         /// </summary>
         private readonly int _contractWorkId;
 
-        #region Сервисы
+		#region Сервисы
 
-        //private readonly IContractWorkService _contractWorkService;
+		private readonly IContractWorkService _contractWorkService;
 
-        #endregion
+		#endregion
 
-        public EditContractWorkForm(
+		public EditContractWorkForm(
             int contractWorkId,
             int planId,
-            ITrainingWorkService contractWorkService)
+			IContractWorkService contractWorkService)
         {
             InitializeComponent();
 
             _contractWorkId = contractWorkId;
             _planId = planId;
 
-            //_contractWorkService = contractWorkService;
-        }
+			_contractWorkService = contractWorkService;
+		}
         
         /// <summary>
         /// При загрузке формы.
@@ -49,15 +50,15 @@ namespace TeacherPlan.Interface
 
                 if (isEdit)
                 {
-                    //var entity = _contractWorkService.GetTrainingWorkById(_contractWorkId);
+					var entity = _contractWorkService.GetContractWorkById(_contractWorkId);
 
-                    //tbName.Text = entity.Name;
-                    //tbType.Text = entity.Type;
-                    //tbExecution.Text = entity.Execution;
-                    //tbDuty.Text = entity.Duty;
-                    //tbComment.Text = entity.Comment;
-                    //numVolume.Value = (decimal?)entity.Volume ?? 0;
-                }
+					tbName.Text = entity.Name;
+					tbType.Text = entity.Type;
+					tbExecution.Text = entity.Execution;
+					tbDuty.Text = entity.Duty;
+					tbComment.Text = entity.Comment;
+					numVolume.Value = (decimal?)entity.Volume ?? 0;
+				}
             }
             catch (Exception ex)
             {
@@ -74,20 +75,20 @@ namespace TeacherPlan.Interface
         {
             try
             {
-                //var entity = new ContractWork
-                //{
-                //    ContractWorkId = _contractWorkId,
-                //    PlanId = _planId,
-                //    Name = tbName.Text,
-                //    Type = tbType.Text,
-                //    Duty = tbDuty.Text,
-                //    Comment = tbComment.Text,
-                //    Execution = tbExecution.Text,
-                //    Volume = numVolume.Value == 0 ? null : (double?)numVolume.Value
-                //};
-                //_contractWorkService.SaveTrainingWork(entity);
+				var entity = new ContractWork
+				{
+					ContractWorkId = _contractWorkId,
+					PlanId = _planId,
+					Name = tbName.Text,
+					Type = tbType.Text,
+					Duty = tbDuty.Text,
+					Comment = tbComment.Text,
+					Execution = tbExecution.Text,
+					Volume = numVolume.Value == 0 ? null : (double?)numVolume.Value
+				};
+				_contractWorkService.SaveContractWork(entity);
 
-                DialogResult = DialogResult.OK;
+				DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)
